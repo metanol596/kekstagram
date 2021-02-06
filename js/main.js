@@ -37,6 +37,7 @@ const getRandomInteger = (minValue, maxValue) => {
 const checkStringLength = (checkedString, maxStringLength) => {
   return (checkedString.length <= maxStringLength) ? true : false;
 }
+checkStringLength();
 
 const getRandomArrayElement = (array) => array[getRandomInteger(0, array.length - 1)];
 
@@ -59,4 +60,4 @@ const createPhotoDescFunc = () => {
   }
   return photoAuthorsArr;
 }
-console.log(createPhotoDescFunc());
+createPhotoDescFunc();
