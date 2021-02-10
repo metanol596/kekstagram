@@ -37,7 +37,7 @@ const getRandomInteger = (minValue, maxValue) => {
 const checkStringLength = (checkedString, maxStringLength) => {
   return (checkedString.length <= maxStringLength) ? true : false;
 }
-checkStringLength();
+checkStringLength('Мама мыла раму', 15);
 
 const getRandomArrayElement = (array) => array[getRandomInteger(0, array.length - 1)];
 
