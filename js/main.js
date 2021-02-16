@@ -1,6 +1,7 @@
 import './utils.js';
 import './data.js';
-import './showing-image-editing-form.js';
+import './image-form.js';
 import './image-scale.js';
-import './adding-image-effects.js';
-import './adding-comment.js'
+import './image-effects.js';
+import './comments-form.js'
+import './image-thumbnails.js'

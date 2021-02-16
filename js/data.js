@@ -1,4 +1,7 @@
-import {getRandomInteger, getRandomArrayElement} from './utils.js';
+import {
+  getRandomInteger,
+  getRandomArrayElement
+} from './utils.js';
 
 const NAMES = [
   'Екатерина',
@@ -26,25 +29,30 @@ const MESSAGES_FOR_COMMENTS = [
 ];
 
 const NUMBER_OF_AUTHORS = 25;
+const LIKES_MIN = 20;
+const LIKES_MAX = 200;
 
-const createPhotoDescFunc = () => {
-  let photoAuthorsArr = [];
+
+const createPhotoDescFunction = () => {
+  const photoAuthorsArray = [];
   for (let i = 0; i < NUMBER_OF_AUTHORS; i++) {
     const id = i + 1;
-    photoAuthorsArr.push({
+    photoAuthorsArray.push({
       id,
       url: 'photos/' + id + '.jpg',
       description: getRandomArrayElement(PHOTO_DESCRIPTIONS),
-      likes: getRandomInteger(20, 200),
-      comments: {
-        commentId: id + 1,
-        avatar: 'img/avatar-' + getRandomInteger(1,6) + '.svg',
+      likes: getRandomInteger(LIKES_MIN, LIKES_MAX),
+      comments: [{
+        commentId: id,
+        avatar: 'img/avatar-' + getRandomInteger(1, 6) + '.svg',
         name: getRandomArrayElement(NAMES),
         message: getRandomArrayElement(MESSAGES_FOR_COMMENTS),
-      },
+      }],
     });
   }
-  return photoAuthorsArr;
+  return photoAuthorsArray;
 }
 
-createPhotoDescFunc();
+export {
+  createPhotoDescFunction
+};

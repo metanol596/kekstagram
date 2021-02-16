@@ -13,4 +13,8 @@ const checkStringLength = (checkedString, maxStringLength) => {
 
 const getRandomArrayElement = (array) => array[getRandomInteger(0, array.length - 1)];
 
-export {getRandomInteger, checkStringLength, getRandomArrayElement};
+export {
+  getRandomInteger,
+  checkStringLength,
+  getRandomArrayElement
+};
