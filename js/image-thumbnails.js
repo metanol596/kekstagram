@@ -1,26 +1,41 @@
 import {
-  createPhotoDescFunction
-} from './data.js';
+  createPhotoDescFunction,
+  thumbnailsListFragment
+} from './main.js'
 
 const thumbnailsContainer = document.querySelector('.pictures');
 const thumbnailTemplate = document.querySelector('#picture').content;
 const thumbnailTemplateItem = thumbnailTemplate.querySelector('.picture');
 
-const photoAuthorsArray = createPhotoDescFunction();
+const getThumbnailsContainer = () => {
+  return thumbnailsContainer;
+}
 
-const thumbnailsListFragment = document.createDocumentFragment();
+export {
+  getThumbnailsContainer
+}
 
-photoAuthorsArray.forEach((picture) => {
-  const cloneThumbnailTemplateItem = thumbnailTemplateItem.cloneNode(true);
-  const imageTemplate = cloneThumbnailTemplateItem.querySelector('.picture__img');
-  const likesTemplate = cloneThumbnailTemplateItem.querySelector('.picture__likes');
-  const commentsTemplate = cloneThumbnailTemplateItem.querySelector('.picture__comments');
+const getThumbnailsFunction = () => {
+  createPhotoDescFunction();
 
-  imageTemplate.src = picture.url;
-  likesTemplate.textContent = picture.likes;
-  commentsTemplate.textContent = picture.comments.length;
+  const photoAuthorsArray = createPhotoDescFunction();
 
-  thumbnailsListFragment.appendChild(cloneThumbnailTemplateItem);
-});
+  photoAuthorsArray.forEach((picture) => {
+    const cloneThumbnailTemplateItem = thumbnailTemplateItem.cloneNode(true);
+    const imageTemplate = cloneThumbnailTemplateItem.querySelector('.picture__img');
+    const likesTemplate = cloneThumbnailTemplateItem.querySelector('.picture__likes');
+    const commentsTemplate = cloneThumbnailTemplateItem.querySelector('.picture__comments');
 
-thumbnailsContainer.appendChild(thumbnailsListFragment);
+    imageTemplate.src = picture.url;
+    likesTemplate.textContent = picture.likes;
+    commentsTemplate.textContent = picture.comments.length;
+
+    thumbnailsListFragment.appendChild(cloneThumbnailTemplateItem);
+  });
+
+  return thumbnailsContainer.appendChild(thumbnailsListFragment);
+}
+
+export {
+  getThumbnailsFunction
+}

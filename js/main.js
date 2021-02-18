@@ -1,7 +1,33 @@
 import './utils.js';
-import './data.js';
-import './image-form.js';
-import './image-scale.js';
-import './image-effects.js';
-import './comments-form.js'
-import './image-thumbnails.js'
+import {
+  createPhotoDescFunction
+} from './data.js';
+
+// Отрисовка миниатюр
+
+const thumbnailsListFragment = document.createDocumentFragment();
+
+export {
+  createPhotoDescFunction,
+  thumbnailsListFragment
+}
+
+import {
+  getThumbnailsFunction
+} from './image-thumbnails.js'
+
+getThumbnailsFunction();
+
+// Полноразмерное изображение
+
+import {
+  getFullImageSection
+} from './full-image.js'
+
+getFullImageSection();
+
+import {
+  getFullImageFunction
+} from './full-image.js'
+
+getFullImageFunction();
