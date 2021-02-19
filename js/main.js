@@ -1,33 +1,58 @@
-import './utils.js';
+import { isEscapeEvent } from './utils.js';
+import { createPhotos } from './data.js';
+import { getThumbnailsMarkup } from './image-thumbnails.js';
 import {
-  createPhotoDescFunction
-} from './data.js';
+  fillFullImage,
+  setComments,
+  fullImageSection,
+  commentCount,
+  commentsLoader
+} from './full-image-modal.js';
 
 // Отрисовка миниатюр
 
-const thumbnailsListFragment = document.createDocumentFragment();
+const thumbnailsContainer = document.querySelector('.pictures');
+const photos = createPhotos();
 
-export {
-  createPhotoDescFunction,
-  thumbnailsListFragment
+const thumbnailsMarkup = getThumbnailsMarkup(photos);
+thumbnailsContainer.appendChild(thumbnailsMarkup);
+
+// Модальное окно с полноразмерным изображением
+const thumbnail = thumbnailsContainer.querySelectorAll('.picture');
+const body = document.querySelector('body');
+
+const onModalEscapeKeydown = (evt) => {
+  if (isEscapeEvent(evt)) {
+    evt.preventDefault();
+    closeFullImageModal();
+  }
+};
+
+const openFullImageModal = () => {
+  fullImageSection.classList.remove('hidden');
+  document.addEventListener('keydown', onModalEscapeKeydown);
+  body.classList.add('modal-open');
 }
 
-import {
-  getThumbnailsFunction
-} from './image-thumbnails.js'
+const closeFullImageModal = () => {
+  fullImageSection.classList.add('hidden');
+  document.removeEventListener('keydown', onModalEscapeKeydown);
+  body.classList.remove('modal-open');
+}
 
-getThumbnailsFunction();
+const closeFullImageButton = fullImageSection.querySelector('.big-picture__cancel');
 
-// Полноразмерное изображение
+thumbnail.forEach((item, i) => {
+  item.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    openFullImageModal();
+    commentsLoader.classList.add('hidden');
+    commentCount.classList.add('hidden');
+    fillFullImage(photos[i]);
+    setComments(photos[i]);
+  });
 
-import {
-  getFullImageSection
-} from './full-image.js'
-
-getFullImageSection();
-
-import {
-  getFullImageFunction
-} from './full-image.js'
-
-getFullImageFunction();
+  closeFullImageButton.addEventListener('click', () => {
+    closeFullImageModal();
+  });
+});

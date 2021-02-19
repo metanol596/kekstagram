@@ -1,41 +1,23 @@
-import {
-  createPhotoDescFunction,
-  thumbnailsListFragment
-} from './main.js'
+const thumbnailTemplate = document.querySelector('#picture')
+  .content
+  .querySelector('.picture');
 
-const thumbnailsContainer = document.querySelector('.pictures');
-const thumbnailTemplate = document.querySelector('#picture').content;
-const thumbnailTemplateItem = thumbnailTemplate.querySelector('.picture');
+const getThumbnailsMarkup = (photos) => {
+  const fragment = document.createDocumentFragment();
 
-const getThumbnailsContainer = () => {
-  return thumbnailsContainer;
-}
+  photos.forEach((picture) => {
+    const clonedTemplate = thumbnailTemplate.cloneNode(true);
+    const image = clonedTemplate.querySelector('.picture__img');
+    const likes = clonedTemplate.querySelector('.picture__likes');
+    const comments = clonedTemplate.querySelector('.picture__comments');
 
-export {
-  getThumbnailsContainer
-}
+    image.src = picture.url;
+    likes.textContent = picture.likes;
+    comments.textContent = picture.comments.length;
 
-const getThumbnailsFunction = () => {
-  createPhotoDescFunction();
-
-  const photoAuthorsArray = createPhotoDescFunction();
-
-  photoAuthorsArray.forEach((picture) => {
-    const cloneThumbnailTemplateItem = thumbnailTemplateItem.cloneNode(true);
-    const imageTemplate = cloneThumbnailTemplateItem.querySelector('.picture__img');
-    const likesTemplate = cloneThumbnailTemplateItem.querySelector('.picture__likes');
-    const commentsTemplate = cloneThumbnailTemplateItem.querySelector('.picture__comments');
-
-    imageTemplate.src = picture.url;
-    likesTemplate.textContent = picture.likes;
-    commentsTemplate.textContent = picture.comments.length;
-
-    thumbnailsListFragment.appendChild(cloneThumbnailTemplateItem);
+    fragment.appendChild(clonedTemplate);
   });
-
-  return thumbnailsContainer.appendChild(thumbnailsListFragment);
+  return fragment;
 }
 
-export {
-  getThumbnailsFunction
-}
+export { getThumbnailsMarkup };

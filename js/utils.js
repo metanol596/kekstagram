@@ -13,8 +13,13 @@ const checkStringLength = (checkedString, maxStringLength) => {
 
 const getRandomArrayElement = (array) => array[getRandomInteger(0, array.length - 1)];
 
+const isEscapeEvent = (evt) => {
+  return evt.key === ('Escape' || 'Esc');
+};
+
 export {
   getRandomInteger,
   checkStringLength,
-  getRandomArrayElement
+  getRandomArrayElement,
+  isEscapeEvent
 };
