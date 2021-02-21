@@ -11,7 +11,7 @@ const NAMES = [
   'Владимир',
 ];
 
-const PHOTO_DESCRIPTIONS = [
+const DESCRIPTIONS = [
   'Горячие ванны',
   'Купил новую машинуу',
   'Отлично отдохнула',
@@ -19,7 +19,7 @@ const PHOTO_DESCRIPTIONS = [
   'Красивый закат',
 ];
 
-const MESSAGES_FOR_COMMENTS = [
+const COMMENTS = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -28,31 +28,36 @@ const MESSAGES_FOR_COMMENTS = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
 ];
 
-const NUMBER_OF_AUTHORS = 25;
+const AUTHORS_AMOUNT = 25;
 const LIKES_MIN = 20;
 const LIKES_MAX = 200;
 
 
-const createPhotoDescFunction = () => {
-  const photoAuthorsArray = [];
-  for (let i = 0; i < NUMBER_OF_AUTHORS; i++) {
+const createPhotos = () => {
+  const photos = [];
+  for (let i = 0; i < AUTHORS_AMOUNT; i++) {
     const id = i + 1;
-    photoAuthorsArray.push({
+    photos.push({
       id,
       url: 'photos/' + id + '.jpg',
-      description: getRandomArrayElement(PHOTO_DESCRIPTIONS),
+      description: getRandomArrayElement(DESCRIPTIONS),
       likes: getRandomInteger(LIKES_MIN, LIKES_MAX),
+      number: 'data-number',
       comments: [{
         commentId: id,
         avatar: 'img/avatar-' + getRandomInteger(1, 6) + '.svg',
         name: getRandomArrayElement(NAMES),
-        message: getRandomArrayElement(MESSAGES_FOR_COMMENTS),
+        message: getRandomArrayElement(COMMENTS),
+      },
+      {
+        commentId: id + 1,
+        avatar: 'img/avatar-' + getRandomInteger(1, 6) + '.svg',
+        name: getRandomArrayElement(NAMES),
+        message: getRandomArrayElement(COMMENTS),
       }],
     });
   }
-  return photoAuthorsArray;
+  return photos;
 }
 
-export {
-  createPhotoDescFunction
-};
+export { createPhotos };
