@@ -23,7 +23,7 @@ const setComments = (picture) => {
     const commentText = item.querySelector('.social__text');
 
     commentAvatar.src = picture.comments[i].avatar;
-    commentAvatar.alt = picture.comments[i].alt;
+    commentAvatar.alt = picture.comments[i].name;
     commentText.textContent = picture.comments[i].message;
   })
 }

@@ -42,6 +42,7 @@ const createPhotos = () => {
       url: 'photos/' + id + '.jpg',
       description: getRandomArrayElement(DESCRIPTIONS),
       likes: getRandomInteger(LIKES_MIN, LIKES_MAX),
+      number: 'data-number',
       comments: [{
         commentId: id,
         avatar: 'img/avatar-' + getRandomInteger(1, 6) + '.svg',
