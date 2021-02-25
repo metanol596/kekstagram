@@ -17,9 +17,15 @@ const isEscapeEvent = (evt) => {
   return evt.key === ('Escape' || 'Esc');
 };
 
+const isOpenModalClass = () => {
+  const body = document.querySelector('body');
+  return (body.classList.contains('modal-open')) ? body.classList.remove('modal-open') : body.classList.add('modal-open');
+}
+
 export {
   getRandomInteger,
   checkStringLength,
   getRandomArrayElement,
-  isEscapeEvent
+  isEscapeEvent,
+  isOpenModalClass
 };

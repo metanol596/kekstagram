@@ -1,3 +1,8 @@
+import {
+  isEscapeEvent,
+  isOpenModalClass
+} from './utils.js';
+
 const fullImageSection = document.querySelector('.big-picture');
 const fullImageContainer = fullImageSection.querySelector('.big-picture__img');
 const fullImageLIkesContainer = fullImageSection.querySelector('.likes-count');
@@ -28,10 +33,33 @@ const setComments = (picture) => {
   })
 }
 
+const closeFullImageButton = fullImageSection.querySelector('.big-picture__cancel');
+
+const onModalEscapeKeydown = (evt) => {
+  if (isEscapeEvent(evt)) {
+    evt.preventDefault();
+    onCloseFullImageButtonClick();
+  }
+}
+
+const openFullImageModal = (picture) => {
+  isOpenModalClass();
+  document.addEventListener('keydown', onModalEscapeKeydown);
+  fullImageSection.classList.remove('hidden');
+  commentsLoader.classList.add('hidden');
+  commentCount.classList.add('hidden');
+  fillFullImage(picture);
+  setComments(picture);
+}
+
+const onCloseFullImageButtonClick = () => {
+  fullImageSection.classList.add('hidden');
+  document.removeEventListener('keydown', onModalEscapeKeydown);
+  isOpenModalClass();
+}
+
+closeFullImageButton.addEventListener('click', onCloseFullImageButtonClick);
+
 export {
-  fillFullImage,
-  setComments,
-  fullImageSection,
-  commentCount,
-  commentsLoader
+  openFullImageModal
 };
