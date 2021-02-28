@@ -17,8 +17,6 @@ const isDoubledHastag = (array) => {
 const onHashtagInputInvalid = () => {
   const hashtags = hashtagsInput.value.trim().split(' ');
   hashtags.forEach((item, i, array) => {
-    console.log(array.length);
-    console.log(isDoubledHastag(array));
     if (array.length > 1 && array[i - 1] === '') {
       hashtagsInput.setCustomValidity('Удалите пробелы');
     } else if (array.length > MAX_HASHTAGS) {
