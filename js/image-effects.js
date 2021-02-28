@@ -1,44 +1,89 @@
-import  './image-form.js';
+
 
 /* global noUiSlider:readonly */
-const imgUploadPreview = document.querySelector('img');
+const imgUploadPreview = document.querySelector('.img-upload__overlay img');
 const imgEffectsList = document.querySelector('.effects__list');
 const sliderElement = document.querySelector('.effect-level__slider');
 const effectLevelValue = document.querySelector('.effect-level__value');
 const filterEffects = {
+  none: {
+    filter: '',
+    unit: '',
+    sliderOptions: {
+      range: {
+        min: 0,
+        max: 1,
+      },
+      start: 0,
+      step: 0.1,
+    },
+  },
   chrome: {
     filter: 'grayscale',
     unit: '',
+    sliderOptions: {
+      range: {
+        min: 0,
+        max: 1,
+      },
+      step: 0.1,
+      start: 1,
+    },
   },
   sepia: {
     filter: 'sepia',
     unit: '',
+    sliderOptions: {
+      range: {
+        min: 0,
+        max: 1,
+      },
+      step: 0.1,
+      start: 1,
+    },
   },
   marvin: {
     filter: 'invert',
     unit: '%',
+    sliderOptions: {
+      range: {
+        min: 0,
+        max: 100,
+      },
+      step: 1,
+      start: 100,
+    },
   },
   phobos: {
     filter: 'blur',
     unit: 'px',
+    sliderOptions: {
+      range: {
+        min: 0,
+        max: 3,
+      },
+      step: 0.1,
+      start: 3,
+    },
   },
   heat: {
     filter: 'brightness',
     unit: '',
-  },
-  original: {
-    filter: '',
-    unit: '',
+    sliderOptions: {
+      range: {
+        min: 1,
+        max: 3,
+      },
+      step: 0.1,
+      start: 3,
+    },
   },
 };
 
+const defaultOptions = filterEffects.none.sliderOptions;
+
 noUiSlider.create(sliderElement, {
-  range: {
-    min: 0,
-    max: 1,
-  },
-  start: 0,
-  step: 0.1,
+  ...defaultOptions,
   connect: 'lower',
   format: {
     to: function (value) {
@@ -67,78 +112,24 @@ if (imgEffectsList.querySelector('[value="none"]').checked === true) {
   sliderElement.removeAttribute('dsabled');
 }
 
+sliderElement.setAttribute('disabled', true);
 const onImgEffectsListClick = (evt) => {
-  sliderElement.setAttribute('disabled', true);
-  if (evt.target && evt.target.closest('.effects__radio') && !evt.target.closest('[value="none"]')) {
+  const selectedFilter = evt.target.value;
+  if (evt.target && evt.target.closest('.effects__radio')) {
     sliderElement.removeAttribute('disabled');
-    imgUploadPreview.classList = 'effects__preview--' + evt.target.value;
+    imgUploadPreview.classList = `effects__preview--${selectedFilter}`;
   }
+  if (evt.target.closest('[value="none"]')) {
+    imgUploadPreview.classList.remove(`effects__preview--${selectedFilter}`);
+    imgUploadPreview.removeAttribute('style');
+  }
+    console.log(imgUploadPreview);
 
-  if (evt.target.value === 'none') {
-    sliderElement.noUiSlider.updateOptions({
-      range: {
-        min: 0,
-        max: 1,
-      },
-      step: 0,
-    });
-    sliderElement.noUiSlider.set(0);
-  }
-  if (evt.target.value === 'chrome') {
-    sliderElement.noUiSlider.updateOptions({
-      range: {
-        min: 0,
-        max: 1,
-      },
-      step: 0.1,
-    });
-    sliderElement.noUiSlider.set(0);
-    setEffectValues(filterEffects.chrome.filter, filterEffects.chrome.unit);
-  }
-  if (evt.target.value === 'sepia') {
-    sliderElement.noUiSlider.updateOptions({
-      range: {
-        min: 0,
-        max: 1,
-      },
-      step: 0.1,
-    });
-    sliderElement.noUiSlider.set(0);
-    setEffectValues(filterEffects.sepia.filter, filterEffects.sepia.unit);
-  }
-  if (evt.target.value === 'marvin') {
-    sliderElement.noUiSlider.updateOptions({
-      range: {
-        min: 0,
-        max: 100,
-      },
-      step: 1,
-    });
-    sliderElement.noUiSlider.set(0);
-    setEffectValues(filterEffects.marvin.filter, filterEffects.marvin.unit);
-  }
-  if (evt.target.value === 'phobos') {
-    sliderElement.noUiSlider.updateOptions({
-      range: {
-        min: 0,
-        max: 3,
-      },
-      step: 0.1,
-    });
-    sliderElement.noUiSlider.set(0);
-    setEffectValues(filterEffects.phobos.filter, filterEffects.phobos.unit);
-  }
-  if (evt.target.value === 'heat') {
-    sliderElement.noUiSlider.updateOptions({
-      range: {
-        min: 1,
-        max: 3,
-      },
-      step: 0.1,
-    });
-    sliderElement.noUiSlider.set(1);
-    setEffectValues(filterEffects.heat.filter, filterEffects.heat.unit);
-  }
+  const settings = filterEffects[selectedFilter].sliderOptions;
+console.log(settings);
+
+  sliderElement.noUiSlider.updateOptions(settings);
+  setEffectValues(filterEffects[selectedFilter].filter, filterEffects[selectedFilter].unit);
 };
 
-imgEffectsList.addEventListener('click', onImgEffectsListClick);
+imgEffectsList.addEventListener('change', onImgEffectsListClick);
