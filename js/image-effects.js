@@ -1,5 +1,3 @@
-
-
 /* global noUiSlider:readonly */
 const imgUploadPreview = document.querySelector('.img-upload__overlay img');
 const imgEffectsList = document.querySelector('.effects__list');
