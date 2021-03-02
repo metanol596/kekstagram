@@ -1,8 +1,8 @@
-/* global noUiSlider:readonly */
-const imgUploadPreview = document.querySelector('.img-upload__overlay img');
-const imgEffectsList = document.querySelector('.effects__list');
 const sliderElement = document.querySelector('.effect-level__slider');
 const effectLevelValue = document.querySelector('.effect-level__value');
+const imgUploadOverlay = document.querySelector('.img-upload__overlay');
+const imgUploadPreview = imgUploadOverlay.querySelector('.img-upload__preview img');
+const defaultFilterRadio = document.querySelector('#effect-none');
 const filterEffects = {
   none: {
     filter: '',
@@ -12,7 +12,7 @@ const filterEffects = {
         min: 0,
         max: 1,
       },
-      start: 0,
+      start: 1,
       step: 0.1,
     },
   },
@@ -80,6 +80,7 @@ const filterEffects = {
 
 const defaultOptions = filterEffects.none.sliderOptions;
 
+/* global noUiSlider:readonly */
 noUiSlider.create(sliderElement, {
   ...defaultOptions,
   connect: 'lower',
@@ -103,31 +104,32 @@ const setEffectValues = (filter, unit) => {
   });
 }
 
-
-if (imgEffectsList.querySelector('[value="none"]').checked === true) {
-  sliderElement.setAttribute('disabled', true);
-} else {
-  sliderElement.removeAttribute('dsabled');
-}
-
 sliderElement.setAttribute('disabled', true);
-const onImgEffectsListClick = (evt) => {
+
+const onImgEffectsListChange = (evt) => {
   const selectedFilter = evt.target.value;
-  if (evt.target && evt.target.closest('.effects__radio')) {
+  sliderElement.setAttribute('disabled', true);
+  if (evt.target && evt.target.closest('.effects__radio') && selectedFilter !== 'none') {
     sliderElement.removeAttribute('disabled');
-    imgUploadPreview.classList = `effects__preview--${selectedFilter}`;
+    imgUploadPreview.classList = 'effects__preview--' + selectedFilter;
+    const options = filterEffects[selectedFilter].sliderOptions;
+    sliderElement.noUiSlider.updateOptions(options);
+    setEffectValues(filterEffects[selectedFilter].filter, filterEffects[selectedFilter].unit);
   }
-  if (evt.target.closest('[value="none"]')) {
-    imgUploadPreview.classList.remove(`effects__preview--${selectedFilter}`);
+  if (selectedFilter === 'none') {
+    sliderElement.setAttribute('disabled', true);
     imgUploadPreview.removeAttribute('style');
+    imgUploadPreview.removeAttribute('class');
   }
-    console.log(imgUploadPreview);
-
-  const settings = filterEffects[selectedFilter].sliderOptions;
-console.log(settings);
-
-  sliderElement.noUiSlider.updateOptions(settings);
-  setEffectValues(filterEffects[selectedFilter].filter, filterEffects[selectedFilter].unit);
 };
 
-imgEffectsList.addEventListener('change', onImgEffectsListClick);
+const resetFilters = () => {
+  defaultFilterRadio.checked = true;
+  sliderElement.setAttribute('disabled', true);
+  imgUploadPreview.removeAttribute('style');
+}
+
+export {
+  onImgEffectsListChange,
+  resetFilters
+}

@@ -36,6 +36,7 @@ const onImgUploadScaleContainerClick = (evt) => {
       convertScaleControlValue += SCALE_INPUT_STEP;
       imageScale += SCALE_INPUT_STEP / 100;
       imgUploadPreview.style.transform = 'scale(' + imageScale + ')';
+
     }
   }
 
@@ -50,7 +51,7 @@ const onImgUploadScaleContainerClick = (evt) => {
   scaleControlValue.value = convertScaleControlValue + '%';
 }
 
-const resetValues = () => {
+const resetScaleValues = () => {
   scaleControlValue.value = MAX_SCALE;
   convertScaleControlValue = parseInt(scaleControlValue.value);
   imageScale = DEFAULT_SCALE;
@@ -59,4 +60,4 @@ const resetValues = () => {
 
 imgUploadScaleContainer.addEventListener('click', onImgUploadScaleContainerClick);
 
-export { resetValues }
+export { resetScaleValues }

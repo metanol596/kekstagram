@@ -2,6 +2,7 @@ const MAX_COMMENT_LENGTH = 140;
 const MAX_HASHTAG_LENGTH = 20;
 const MAX_HASHTAGS = 5;
 const VALID_SYMBOLS = /^#[a-z\dа-я]+$/i;
+
 const hashtagsInput = document.querySelector('.text__hashtags');
 const commentInput = document.querySelector('.text__description');
 const isValidHashtag = (item) => {

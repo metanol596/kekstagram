@@ -60,6 +60,4 @@ const onCloseFullImageButtonClick = () => {
 
 closeFullImageButton.addEventListener('click', onCloseFullImageButtonClick);
 
-export {
-  openFullImageModal
-};
+export { openFullImageModal }
