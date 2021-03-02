@@ -1,6 +1,6 @@
 import {
   isEscapeEvent,
-  isOpenModalClass
+  checkOpenModalClass
 } from './utils.js';
 
 const fullImageSection = document.querySelector('.big-picture');
@@ -43,7 +43,7 @@ const onModalEscapeKeydown = (evt) => {
 }
 
 const openFullImageModal = (picture) => {
-  isOpenModalClass();
+  checkOpenModalClass();
   document.addEventListener('keydown', onModalEscapeKeydown);
   fullImageSection.classList.remove('hidden');
   commentsLoader.classList.add('hidden');
@@ -55,11 +55,9 @@ const openFullImageModal = (picture) => {
 const onCloseFullImageButtonClick = () => {
   fullImageSection.classList.add('hidden');
   document.removeEventListener('keydown', onModalEscapeKeydown);
-  isOpenModalClass();
+  checkOpenModalClass();
 }
 
 closeFullImageButton.addEventListener('click', onCloseFullImageButtonClick);
 
-export {
-  openFullImageModal
-};
+export { openFullImageModal }

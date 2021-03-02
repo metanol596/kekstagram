@@ -1,8 +1,10 @@
 import { createPhotos } from './data.js';
 import { getThumbnailsMarkup } from './image-thumbnails.js';
 import { openFullImageModal } from './full-image-modal.js';
+import './upload-image-form.js';
 import './image-scale.js';
 import './image-effects.js';
+import './form-validation.js';
 
 // Отрисовка миниатюр
 

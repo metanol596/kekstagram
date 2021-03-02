@@ -1,50 +1,63 @@
-import  './image-form.js';
+import { imgUploadPreview } from './upload-image-form.js'
 
-let IMAGE_SCALE = 1;
+const DEFAULT_SCALE = 1;
+const MIN_SCALE = 25;
+const MAX_SCALE = 100;
+const DEFAULT_SCALE_INPUT = '100%';
+const SCALE_INPUT_STEP = 25;
+
 const imgUploadScaleContainer = document.querySelector('.img-upload__scale');
 const scaleControlBigger = imgUploadScaleContainer.querySelector('.scale__control--bigger');
 const scaleControlSmaller = imgUploadScaleContainer.querySelector('.scale__control--smaller');
-let scaleControlValue = imgUploadScaleContainer.querySelector('.scale__control--value');
-const imgUploadPreviewContainer = document.querySelector('.img-upload__preview');
+const scaleControlValue = imgUploadScaleContainer.querySelector('.scale__control--value');
 
-scaleControlValue.defaultValue = '100%';
+scaleControlValue.defaultValue = DEFAULT_SCALE_INPUT;
 
 let convertScaleControlValue = parseInt(scaleControlValue.value);
+let imageScale = DEFAULT_SCALE;
 
-const isBorderControlValue = () => {
-  if (convertScaleControlValue === 100) {
+const toggleControlState = () => {
+  if (convertScaleControlValue === MAX_SCALE - 1) {
     scaleControlBigger.disabled = true;
     scaleControlSmaller.disabled = false;
   }
 
-  if (convertScaleControlValue === 25) {
+  if (convertScaleControlValue === MIN_SCALE + 1) {
     scaleControlSmaller.disabled = true;
     scaleControlBigger.disabled = false;
   }
+  scaleControlBigger.disabled = false;
 }
 
 const onImgUploadScaleContainerClick = (evt) => {
   if (evt.target && evt.target.closest('.scale__control--bigger')) {
-    isBorderControlValue();
-    scaleControlSmaller.disabled = false;
-    if (convertScaleControlValue < 100) {
-      convertScaleControlValue += 25;
-      IMAGE_SCALE += 0.25;
-      imgUploadPreviewContainer.style.transform = 'scale(' + IMAGE_SCALE + ')';
+    toggleControlState();
+    if (convertScaleControlValue < MAX_SCALE) {
+      convertScaleControlValue += SCALE_INPUT_STEP;
+      imageScale += SCALE_INPUT_STEP / 100;
+      imgUploadPreview.style.transform = 'scale(' + imageScale + ')';
+
     }
-    scaleControlValue.value = convertScaleControlValue + '%';
   }
 
   if (evt.target && evt.target.closest('.scale__control--smaller')) {
-    isBorderControlValue();
-    scaleControlBigger.disabled = false;
-    if (convertScaleControlValue > 25) {
-      convertScaleControlValue -= 25;
-      IMAGE_SCALE -= 0.25;
-      imgUploadPreviewContainer.style.transform = 'scale(' + IMAGE_SCALE + ')';
+    toggleControlState();
+    if (convertScaleControlValue > MIN_SCALE) {
+      convertScaleControlValue -= SCALE_INPUT_STEP;
+      imageScale -= SCALE_INPUT_STEP / 100;
+      imgUploadPreview.style.transform = 'scale(' + imageScale + ')';
     }
-    scaleControlValue.value = convertScaleControlValue + '%';
   }
+  scaleControlValue.value = convertScaleControlValue + '%';
+}
+
+const resetScaleValues = () => {
+  scaleControlValue.value = MAX_SCALE;
+  convertScaleControlValue = parseInt(scaleControlValue.value);
+  imageScale = DEFAULT_SCALE;
+  scaleControlValue.value = convertScaleControlValue + '%';
 }
 
 imgUploadScaleContainer.addEventListener('click', onImgUploadScaleContainerClick);
+
+export { resetScaleValues }
