@@ -104,20 +104,17 @@ const setEffectValues = (filter, unit) => {
   });
 }
 
-sliderElement.setAttribute('disabled', true);
-
 const onImgEffectsListChange = (evt) => {
   const selectedFilter = evt.target.value;
-  sliderElement.setAttribute('disabled', true);
   if (evt.target && evt.target.closest('.effects__radio') && selectedFilter !== 'none') {
-    sliderElement.removeAttribute('disabled');
+    sliderElement.style.display = 'block';
     imgUploadPreview.classList = 'effects__preview--' + selectedFilter;
     const options = filterEffects[selectedFilter].sliderOptions;
     sliderElement.noUiSlider.updateOptions(options);
     setEffectValues(filterEffects[selectedFilter].filter, filterEffects[selectedFilter].unit);
   }
   if (selectedFilter === 'none') {
-    sliderElement.setAttribute('disabled', true);
+    sliderElement.style.display = 'none';
     imgUploadPreview.removeAttribute('style');
     imgUploadPreview.removeAttribute('class');
   }
@@ -125,7 +122,7 @@ const onImgEffectsListChange = (evt) => {
 
 const resetFilters = () => {
   defaultFilterRadio.checked = true;
-  sliderElement.setAttribute('disabled', true);
+  sliderElement.style.display = 'none';
   imgUploadPreview.removeAttribute('style');
 }
 

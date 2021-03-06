@@ -1,3 +1,5 @@
+import { checkStringLength } from './utils.js'
+
 const MAX_COMMENT_LENGTH = 140;
 const MAX_HASHTAG_LENGTH = 20;
 const MAX_HASHTAGS = 5;
@@ -36,19 +38,18 @@ const onHashtagInputInvalid = () => {
 }
 
 const onCommentInputInput = () => {
-  const commentLength = commentInput.textLength;
-  const WARNING_MESSAGE = `Длина комментария - ${commentLength} / ${MAX_COMMENT_LENGTH}`;
-  if (commentLength > MAX_COMMENT_LENGTH) {
-    commentInput.setCustomValidity(WARNING_MESSAGE);
-  } else {
-    commentInput.setCustomValidity('');
-  }
-  commentInput.reportValidity();
+  checkStringLength(commentInput, MAX_COMMENT_LENGTH);
+}
+
+const resetFormInputs = () => {
+  commentInput.value = '';
+  hashtagsInput.value = '';
 }
 
 export {
   onCommentInputInput,
   onHashtagInputInvalid,
   hashtagsInput,
-  commentInput
+  commentInput,
+  resetFormInputs
 };
