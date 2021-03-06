@@ -8,7 +8,14 @@ const getRandomInteger = (minValue, maxValue) => {
 }
 
 const checkStringLength = (checkedString, maxStringLength) => {
-  return (checkedString.length <= maxStringLength) ? true : false;
+  const stringLength = checkedString.textLength;
+  const WARNING_MESSAGE = `Длина сообщения - ${stringLength} / ${maxStringLength}`;
+  if (stringLength > maxStringLength) {
+    checkedString.setCustomValidity(WARNING_MESSAGE);
+  } else {
+    checkedString.setCustomValidity('');
+  }
+  checkedString.reportValidity();
 }
 
 const getRandomArrayElement = (array) => array[getRandomInteger(0, array.length - 1)];

@@ -7,7 +7,8 @@ import {
   onCommentInputInput,
   onHashtagInputInvalid,
   hashtagsInput,
-  commentInput
+  commentInput,
+  resetFormInputs
 } from './form-validation.js';
 
 import { resetScaleValues } from './image-scale.js';
@@ -16,12 +17,15 @@ import {
   resetFilters
 } from './image-effects.js';
 
-const uploadFileInput = document.querySelector('#upload-file');
-const imgUploadOverlay = document.querySelector('.img-upload__overlay');
-const imgUploadCancelButton = imgUploadOverlay.querySelector('#upload-cancel');
-const imgUploadPreview = imgUploadOverlay.querySelector('.img-upload__preview img');
-const descriptionFieldset = document.querySelector('.img-upload__text');
-const imgEffectsList = document.querySelector('.effects__list');
+import { sendData } from './api.js';
+
+const imgUploadForm = document.querySelector('.img-upload__form');
+const uploadFileInput = imgUploadForm.querySelector('#upload-file');
+const imgUploadOverlay = imgUploadForm.querySelector('.img-upload__overlay');
+const imgUploadCancelButton = imgUploadForm.querySelector('#upload-cancel');
+const imgUploadPreview = imgUploadForm.querySelector('.img-upload__preview img');
+const descriptionFieldset = imgUploadForm.querySelector('.img-upload__text');
+const imgEffectsList = imgUploadForm.querySelector('.effects__list');
 const onImageFormEscapeKeydown = (evt) => {
   if (isEscapeEvent(evt)) {
     onimgUploadCancelButtonClick();
@@ -45,6 +49,7 @@ const onUploadFileInput = () => {
 
   imgEffectsList.addEventListener('change', onImgEffectsListChange);
   resetFilters();
+
 }
 
 const onimgUploadCancelButtonClick = () => {
@@ -54,6 +59,7 @@ const onimgUploadCancelButtonClick = () => {
 
   resetScaleValues();
   resetUploadImgValues();
+  resetFormInputs();
 
   imgUploadPreview.removeAttribute('style');
 
@@ -72,6 +78,8 @@ const onimgUploadCancelButtonClick = () => {
   imgEffectsList.removeEventListener('change', onImgEffectsListChange);
 }
 
+sendData(onimgUploadCancelButtonClick);
+
 const resetUploadImgValues = () => {
   uploadFileInput.value = '';
   imgUploadPreview.className = '';
@@ -81,5 +89,6 @@ uploadFileInput.addEventListener('input', onUploadFileInput);
 
 export {
   imgUploadPreview,
-  imgEffectsList
+  imgEffectsList,
+  imgUploadForm
 }
