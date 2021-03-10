@@ -29,10 +29,28 @@ const checkOpenModalClass = () => {
   body.classList.contains('modal-open') ? body.classList.remove('modal-open') : body.classList.add('modal-open');
 }
 
+const setErrorIndicator = (input) => {
+  input.style.outline = '2px auto red';
+}
+
+const shufflePhotos = (photos, randomPhotosCount) => {
+  let currentElement = photos.length;
+  while (currentElement !== 0) {
+    let randomElement = Math.floor(Math.random() * currentElement);
+    currentElement -= 1;
+    let swap = photos[currentElement];
+    photos[currentElement] = photos[randomElement];
+    photos[randomElement] = swap;
+  }
+  return photos.slice(0, randomPhotosCount);
+}
+
 export {
   getRandomInteger,
   checkStringLength,
   getRandomArrayElement,
   isEscapeEvent,
-  checkOpenModalClass
+  checkOpenModalClass,
+  setErrorIndicator,
+  shufflePhotos
 };

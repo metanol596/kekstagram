@@ -1,4 +1,4 @@
-import { imgUploadPreview } from './upload-image-form.js'
+import { imgUploadPreview } from './upload-img-form.js'
 
 const DEFAULT_SCALE = 1;
 const MIN_SCALE = 25;
