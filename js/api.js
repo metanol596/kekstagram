@@ -1,51 +1,42 @@
-import { getThumbnailsMarkup } from './image-thumbnails.js';
-import { imgUploadForm } from './upload-image-form.js';
+import { imgUploadForm, resetStates } from './upload-img-form.js';
 import {
-  defineUploadStatus, defineDownloadStatus
+  showMessagePopup
 } from './data-request-status.js';
 
-import { openFullImageModal } from './full-image-modal.js';
+const UPLOAD_DATA_URL = 'https://22.javascript.pages.academy/kekstagram';
+const DOWNLOAD_DATA_POPUP = 'Ошибка загрузки страницы';
+const POPUP_CLOSE_BUTTON = 'Закрыть';
 
-const downloadDataUrl = 'https://22.javascript.pages.academy/kekstagram/data' ;
-const uploadDataUrl = 'https://22.javascript.pages.academy/kekstagram';
+const getData = (url, onSuccess) => {
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => onSuccess(data))
+    .catch(() => showMessagePopup('error', {
+      text: DOWNLOAD_DATA_POPUP,
+      buttonText: POPUP_CLOSE_BUTTON,
+    }));
+}
 
-fetch(downloadDataUrl)
-  .then((response) => response.json())
-  .then((photos) => {
-    const thumbnailsContainer = document.querySelector('.pictures');
-    const thumbnailsMarkup = getThumbnailsMarkup(photos);
-    thumbnailsContainer.appendChild(thumbnailsMarkup);
-    const onThumbnailsContainerClick = (evt) => {
-      if (evt.target && evt.target.closest('.picture')) {
-        evt.preventDefault();
-        const currentImage = parseInt(evt.target.dataset.number);
-        const photo = photos[currentImage];
-        openFullImageModal(photo);
-      }
-    }
-    thumbnailsContainer.addEventListener('click', onThumbnailsContainerClick);
-  })
-  .catch(defineDownloadStatus);
-
-const sendData = (onSuccess) => {
+const addFormSubmitListener = (onSuccess) => {
   imgUploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const formData = new FormData(evt.target);
 
-    fetch(uploadDataUrl, {
+    fetch(UPLOAD_DATA_URL, {
       method: 'POST',
       body: formData,
     })
       .then((response) => {
         if (response.ok) {
           onSuccess();
-          defineUploadStatus('success');
+          showMessagePopup('success');
         } else {
-          defineUploadStatus('error');
+          showMessagePopup('error');
+          resetStates();
         }
       })
-      .catch(() => defineUploadStatus('error'));
+      .catch(() => showMessagePopup('error'));
   });
 }
 
-export { sendData }
+export { getData, addFormSubmitListener }

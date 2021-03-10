@@ -7,17 +7,16 @@ import {
   onCommentInputInput,
   onHashtagInputInvalid,
   hashtagsInput,
-  commentInput,
-  resetFormInputs
+  commentInput
 } from './form-validation.js';
 
-import { resetScaleValues } from './image-scale.js';
+import { resetScaleValues } from './img-scale.js';
 import {
   onImgEffectsListChange,
   resetFilters
-} from './image-effects.js';
+} from './img-effects.js';
 
-import { sendData } from './api.js';
+import { addFormSubmitListener } from './api.js';
 
 const imgUploadForm = document.querySelector('.img-upload__form');
 const uploadFileInput = imgUploadForm.querySelector('#upload-file');
@@ -28,7 +27,7 @@ const descriptionFieldset = imgUploadForm.querySelector('.img-upload__text');
 const imgEffectsList = imgUploadForm.querySelector('.effects__list');
 const onImageFormEscapeKeydown = (evt) => {
   if (isEscapeEvent(evt)) {
-    onimgUploadCancelButtonClick();
+    resetStates();
   }
 }
 
@@ -36,7 +35,7 @@ const onUploadFileInput = () => {
   imgUploadOverlay.classList.remove('hidden');
   checkOpenModalClass();
   window.addEventListener('keydown', onImageFormEscapeKeydown);
-  imgUploadCancelButton.addEventListener('click', onimgUploadCancelButtonClick);
+  imgUploadCancelButton.addEventListener('click', onImgUploadCancelButtonClick);
 
   commentInput.addEventListener('input', onCommentInputInput);
   hashtagsInput.addEventListener('input', onHashtagInputInvalid);
@@ -49,22 +48,21 @@ const onUploadFileInput = () => {
 
   imgEffectsList.addEventListener('change', onImgEffectsListChange);
   resetFilters();
-
 }
-
-const onimgUploadCancelButtonClick = () => {
+const resetStates = () => {
   imgUploadOverlay.classList.add('hidden');
   checkOpenModalClass();
   window.removeEventListener('keydown', onImageFormEscapeKeydown);
 
   resetScaleValues();
   resetUploadImgValues();
-  resetFormInputs();
+  imgUploadForm.reset();
 
   imgUploadPreview.removeAttribute('style');
 
   commentInput.removeEventListener('input', onCommentInputInput);
   hashtagsInput.removeEventListener('input', onHashtagInputInvalid);
+  hashtagsInput.setCustomValidity('');
 
   descriptionFieldset.removeEventListener('focusin', () => {
     window.removeEventListener('keydown', onImageFormEscapeKeydown);
@@ -73,12 +71,15 @@ const onimgUploadCancelButtonClick = () => {
     window.addEventListener('keydown', onImageFormEscapeKeydown)
   });
 
-  imgUploadCancelButton.removeEventListener('click', onimgUploadCancelButtonClick);
+  imgUploadCancelButton.removeEventListener('click', onImgUploadCancelButtonClick);
 
   imgEffectsList.removeEventListener('change', onImgEffectsListChange);
 }
+const onImgUploadCancelButtonClick = () => {
+  resetStates();
+}
 
-sendData(onimgUploadCancelButtonClick);
+addFormSubmitListener(resetStates);
 
 const resetUploadImgValues = () => {
   uploadFileInput.value = '';
@@ -90,5 +91,6 @@ uploadFileInput.addEventListener('input', onUploadFileInput);
 export {
   imgUploadPreview,
   imgEffectsList,
-  imgUploadForm
+  imgUploadForm,
+  resetStates
 }

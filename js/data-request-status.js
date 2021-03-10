@@ -2,12 +2,24 @@ import { isEscapeEvent } from './utils.js';
 
 const main = document.querySelector('main');
 
-const defineUploadStatus = (status) => {
-  const template = document.querySelector(`#${status}`).content;
-  const message = template.querySelector(`.${status}`).cloneNode(true);
+const successTemplate = document.querySelector('#success').content.querySelector('.success');
+const errorTemplate = document.querySelector('#error').content.querySelector('.error');
+
+const showMessagePopup = (status, options) => {
+  const message = status === 'error' ? errorTemplate.cloneNode(true) : successTemplate.cloneNode(true);
   const button = message.querySelector(`.${status}__button`);
 
+  if (options) {
+    const errorTitle = message.querySelector('.error__title');
+    const errorButton = message.querySelector('.error__button');
+
+    errorTitle.textContent = options.text;
+    errorButton.textContent = options.buttonText;
+  }
+
   message.style.zIndex = '3';
+  message.style.lineHeight = '32px';
+
   main.appendChild(message);
 
   button.addEventListener('click', () => {
@@ -26,40 +38,7 @@ const defineUploadStatus = (status) => {
 
   setTimeout(() => {
     message.remove();
-  }, 2500);
+  }, 5000);
 }
 
-const defineDownloadStatus = () =>  {
-  const template = document.querySelector('#error').content;
-  const message = template.querySelector('.error').cloneNode(true);
-
-  message.style.zIndex = '3';
-  message.style.lineHeight = '32px';
-  main.appendChild(message);
-
-  const errorTitle = message.querySelector('.error__title');
-  const errorButton = message.querySelector('.error__button');
-
-  errorTitle.textContent = 'При загрузке страницы произошла ошибка';
-  errorButton.textContent = 'Закрыть';
-
-  errorButton.addEventListener('click', () => {
-    message.remove();
-  })
-
-  window.addEventListener('click', () =>{
-    message.remove();
-  })
-
-  window.addEventListener('keydown', (evt) => {
-    if (isEscapeEvent(evt)) {
-      message.remove();
-    }
-  })
-
-  setTimeout(() => {
-    message.remove();
-  }, 2500);
-}
-
-export { defineUploadStatus, defineDownloadStatus }
+export { showMessagePopup }
