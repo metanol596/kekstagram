@@ -36,7 +36,6 @@ const onImgUploadScaleContainerClick = (evt) => {
       convertScaleControlValue += SCALE_INPUT_STEP;
       imageScale += SCALE_INPUT_STEP / 100;
       imgUploadPreview.style.transform = 'scale(' + imageScale + ')';
-
     }
   }
 

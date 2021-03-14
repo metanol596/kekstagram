@@ -1,39 +1,41 @@
+/* global _:readonly */
+const RERENDER_DELAY = 500;
+
 const defaultFilterButton = document.querySelector('#filter-default');
 const randomFilterButton = document.querySelector('#filter-random');
 const discussedFilterButton = document.querySelector('#filter-discussed');
 const setDefaultHandler = (cb) => {
-  defaultFilterButton.addEventListener('click', () => {
-    if (discussedFilterButton.classList.contains('img-filters__button--active') || randomFilterButton.classList.contains('img-filters__button--active')) {
-      discussedFilterButton.classList.remove('img-filters__button--active');
-      randomFilterButton.classList.remove('img-filters__button--active');
-    }
-    defaultFilterButton.classList.add('img-filters__button--active');
+  defaultFilterButton.addEventListener('click', _.debounce((evt) => {
+    setActiveState(evt);
     cb();
-  })
-}
+  },
+  RERENDER_DELAY,
+  ));
+};
 
 const setRandomHandler = (cb) => {
-  randomFilterButton.addEventListener('click', () => {
-    if (defaultFilterButton.classList.contains('img-filters__button--active') || discussedFilterButton.classList.contains('img-filters__button--active')) {
-      defaultFilterButton.classList.remove('img-filters__button--active');
-      discussedFilterButton.classList.remove('img-filters__button--active');
-    }
-
-    randomFilterButton.classList.add('img-filters__button--active');
+  randomFilterButton.addEventListener('click', _.debounce((evt) => {
+    setActiveState(evt);
     cb();
-  })
-}
+  },
+  RERENDER_DELAY,
+  ));
+};
 
 const setDiscussedHandler = (cb) => {
-  discussedFilterButton.addEventListener('click', () => {
-    if (defaultFilterButton.classList.contains('img-filters__button--active') || randomFilterButton.classList.contains('img-filters__button--active')) {
-      defaultFilterButton.classList.remove('img-filters__button--active');
-      randomFilterButton.classList.remove('img-filters__button--active');
-    }
-
-    discussedFilterButton.classList.add('img-filters__button--active');
+  discussedFilterButton.addEventListener('click', _.debounce((evt) => {
+    setActiveState(evt);
     cb();
-  })
-}
+  },
+  RERENDER_DELAY,
+  ));
+};
 
-export {setDefaultHandler, setRandomHandler, setDiscussedHandler}
+const setActiveState = (evt) => {
+  const button = evt.target;
+  const activeButton = document.querySelector('.img-filters__button--active');
+  activeButton.classList.remove('img-filters__button--active');
+  button.classList.add('img-filters__button--active');
+};
+
+export { setDefaultHandler, setRandomHandler, setDiscussedHandler }

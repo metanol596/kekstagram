@@ -1,3 +1,4 @@
+/* global noUiSlider:readonly */
 import { filterEffects } from './filter-effects.js';
 
 const sliderElementContainer = document.querySelector('.effect-level');
@@ -9,7 +10,6 @@ const defaultFilterRadio = document.querySelector('#effect-none');
 
 const defaultOptions = filterEffects.none.sliderOptions;
 
-/* global noUiSlider:readonly */
 noUiSlider.create(sliderElement, {
   ...defaultOptions,
   connect: 'lower',
@@ -31,7 +31,7 @@ const setEffectValues = (filter, unit) => {
     effectLevelValue.value = values[handle];
     imgUploadPreview.style.filter = `${filter}(${effectLevelValue.value}${unit})`;
   });
-}
+};
 
 const onImgEffectsListChange = (evt) => {
   const selectedFilter = evt.target.value;
@@ -53,9 +53,6 @@ const resetFilters = () => {
   defaultFilterRadio.checked = true;
   sliderElementContainer.style.display = 'none';
   imgUploadPreview.removeAttribute('style');
-}
+};
 
-export {
-  onImgEffectsListChange,
-  resetFilters
-}
+export { onImgEffectsListChange, resetFilters }

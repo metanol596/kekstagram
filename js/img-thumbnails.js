@@ -1,3 +1,5 @@
+import {fillFullImage} from './full-img-modal.js';
+
 const thumbnailTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
@@ -19,6 +21,9 @@ const getThumbnailsMarkup = (photos) => {
       comments.textContent = picture.comments.length;
 
       fragment.appendChild(clonedTemplate);
+      clonedTemplate.addEventListener('click', () => {
+        fillFullImage(picture);
+      })
     });
 
   const pictureNodes = document.querySelectorAll('.picture');
