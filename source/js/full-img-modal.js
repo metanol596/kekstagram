@@ -1,7 +1,7 @@
 import { isEscapeEvent, checkOpenModalClass } from './utils.js';
 
 const MAX_COMMENTS_COUNT = 5;
-
+console.log(MAX_COMMENTS_COUNT);
 let renderedCommentsCount = MAX_COMMENTS_COUNT;
 const fullImageSection = document.querySelector('.big-picture');
 const fullImageContainer = fullImageSection.querySelector('.big-picture__img');
