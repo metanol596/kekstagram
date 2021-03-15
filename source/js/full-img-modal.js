@@ -1,58 +1,75 @@
 import { isEscapeEvent, checkOpenModalClass } from './utils.js';
 
-const MAX_COMMENTS_COUNT = 5;
-console.log(MAX_COMMENTS_COUNT);
-let renderedCommentsCount = MAX_COMMENTS_COUNT;
+const MAX_DISPLAYED_COMMENTS_COUNT = 5;
+
 const fullImageSection = document.querySelector('.big-picture');
 const fullImageContainer = fullImageSection.querySelector('.big-picture__img');
 const fullImageLIkesContainer = fullImageSection.querySelector('.likes-count');
 const fullImageCommentsContainer = fullImageSection.querySelector('.comments-count');
 const fullImage = fullImageContainer.querySelector('img');
 const commentsBlock = document.querySelector('.social__comments');
-const commentItems = commentsBlock.querySelectorAll('.social__comment');
 const commentCaption = fullImageSection.querySelector('.social__caption');
 const commentCount = fullImageSection.querySelector('.social__comment-count');
 const commentsLoaderButton = fullImageSection.querySelector('.comments-loader');
-let comments = [];
+let renderedCommentsCount = MAX_DISPLAYED_COMMENTS_COUNT;
 
 const fillFullImage = (picture) => {
   fullImage.src = picture.url;
   fullImageLIkesContainer.textContent = picture.likes;
-  fullImageCommentsContainer.textContent = picture.comments.length;
-  commentsBlock.innerHTML = '';
-  comments = picture.comments;
-
-  if (comments.length > 0) {
-    renderCommentsMarkup();
-  }
-
-  if (comments.length > MAX_COMMENTS_COUNT) {
-    commentsLoaderButton.classList.remove('hidden');
-    commentsLoaderButton.addEventListener('click', oncommentsLoaderButtonClick);
-  } else if (comments.length <= MAX_COMMENTS_COUNT) {
-    commentsLoaderButton.classList.add('hidden');
-  }
-  // oncommentsLoaderButtonClick(picture);
 };
 
-
+const createCommentMarkup = (item) => {
+  const comment = document.createElement('li');
+  comment.classList.add('social__comment');
+  comment.innerHTML = `<img class="social__picture" src="${item.avatar}" alt="${item.name}" width="35" height="35">
+                      <p class="social__text">${item.message}</p>`;
+  commentsBlock.appendChild(comment);
+}
 
 const setComments = (picture) => {
+  const startLoadedComments = commentsBlock.childElementCount;
+  const commentsLength = picture.comments.length;
+  const comments = picture.comments;
   commentCaption.textContent = picture.description;
-  commentItems.forEach((item, i) => {
-    const commentAvatar = item.querySelector('.social__picture');
-    const commentText = item.querySelector('.social__text');
+  commentsBlock.innerHTML = '';
 
-    commentAvatar.src = picture.comments[i].avatar;
-    commentAvatar.alt = picture.comments[i].name;
-    commentText.textContent = picture.comments[i].message;
-    // comments = picture.comments;
-  })
+  if (commentsLength > 0 && commentsLength <= MAX_DISPLAYED_COMMENTS_COUNT) {
+    commentsLoaderButton.classList.add('hidden');
+    comments.forEach((item) => {
+      createCommentMarkup(item);
+      commentCount.innerHTML = `${commentsLength} из <span class="comments-count">${commentsLength}</span> комментариев`;
+    })
+  }
+
+  if (commentsLength > MAX_DISPLAYED_COMMENTS_COUNT) {
+    commentsLoaderButton.classList.remove('hidden');
+    const previousLoadedComments = comments.slice(0, MAX_DISPLAYED_COMMENTS_COUNT);
+    previousLoadedComments.forEach((item) => {
+      createCommentMarkup(item);
+      commentCount.innerHTML = `${commentsBlock.childElementCount} из <span class="comments-count">${commentsLength}</span> комментариев`;
+    })
+    commentsLoaderButton.addEventListener('click', ()=> {
+      const nextLoadedCommemnts = comments.slice(startLoadedComments, (startLoadedComments + MAX_DISPLAYED_COMMENTS_COUNT));
+      nextLoadedCommemnts.forEach((item) => {
+        createCommentMarkup(item);
+        commentCount.innerHTML = `${commentsBlock.childElementCount} из <span class="comments-count">${commentsLength}</span> комментариев`;
+      })
+      const remainderLoadedComments = comments.slice(-1, (commentsLength - commentsBlock.childElementCount));
+      remainderLoadedComments.forEach((item) => {
+        createCommentMarkup(item);
+        commentCount.innerHTML = `${commentsBlock.childElementCount} из <span class="comments-count">${commentsLength}</span> комментариев`;
+      })
+      if (commentsBlock.childElementCount === commentsLength) {
+        commentsLoaderButton.classList.add('hidden');
+      }
+    });
+  }
 };
 
 const cleanComments = () => {
-  commentItems.forEach((item) => {
-    item.remove();
+  const commentItems = commentsBlock.querySelectorAll('.social__comment');
+  commentItems.forEach((element) => {
+    element.remove();
   })
 }
 
@@ -65,33 +82,12 @@ const onWindowKeydown = (evt) => {
   }
 };
 
-const oncommentsLoaderButtonClick = () => {
-  cleanComments();
-  renderedCommentsCount += MAX_COMMENTS_COUNT;
-  renderCommentsMarkup();
-  commentCount.innerHTML = `${commentsBlock.children.length} из <span class="comments-count">${comments.length}</span> комментариев`;
-}
-
-const renderCommentsMarkup = () => {
-  comments.slice(0, renderedCommentsCount).forEach((element) => {
-    const item = document.createElement('li');
-    item.classList.add('social__comment');
-    item.innerHTML = `<img class="social__picture" src="${element.avatar}" alt="${element.name}" width="35" height="35">
-    <p class="social__text">${element.message}</p>`;
-    commentsBlock.appendChild(item);
-    if (commentItems.length === comments.length) {
-      commentsLoaderButton.classList.add('hidden');
-    }
-  })
-}
-
 const openFullImageModal = (picture) => {
   checkOpenModalClass();
   window.addEventListener('keydown', onWindowKeydown);
   fullImageSection.classList.remove('hidden');
   fillFullImage(picture);
   setComments(picture);
-  commentsLoaderButton.addEventListener('click', oncommentsLoaderButtonClick);
 };
 
 const onCloseFullImageButtonClick = () => {
@@ -99,10 +95,8 @@ const onCloseFullImageButtonClick = () => {
   window.removeEventListener('keydown', onWindowKeydown);
   checkOpenModalClass();
   cleanComments();
-  commentsLoaderButton.classList.add('hidden');
-  renderedCommentsCount = MAX_COMMENTS_COUNT;
 };
 
 closeFullImageButton.addEventListener('click', onCloseFullImageButtonClick);
 
-export { openFullImageModal, fillFullImage }
+export { openFullImageModal }

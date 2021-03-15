@@ -11,10 +11,9 @@ const scaleControlBigger = imgUploadScaleContainer.querySelector('.scale__contro
 const scaleControlSmaller = imgUploadScaleContainer.querySelector('.scale__control--smaller');
 const scaleControlValue = imgUploadScaleContainer.querySelector('.scale__control--value');
 
-scaleControlValue.defaultValue = DEFAULT_SCALE_INPUT;
-
 let convertScaleControlValue = parseInt(scaleControlValue.value);
 let imageScale = DEFAULT_SCALE;
+scaleControlValue.defaultValue = DEFAULT_SCALE_INPUT;
 
 const toggleControlState = () => {
   if (convertScaleControlValue === MAX_SCALE - 1) {
