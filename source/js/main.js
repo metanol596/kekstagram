@@ -1,13 +1,13 @@
-import './upload-img-form.js';
 import './img-scale.js';
+import './upload-img-form.js';
 import './img-effects.js';
 import './form-validation.js';
-import './insert-image.js';
 import { getData } from './api.js';
 import { getThumbnailsMarkup } from './img-thumbnails.js';
 import { openFullImageModal } from './full-img-modal.js';
 import { setDefaultHandler, setRandomHandler, setDiscussedHandler } from './img-filter-handlers.js';
 import { shufflePhotos } from './utils.js';
+import './insert-image.js';
 
 const PHOTOS_COUNT = 25;
 const RANDOM_PHOTOS_COUNT = 10;
