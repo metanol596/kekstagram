@@ -1,7 +1,4 @@
-import {
-  isEscapeEvent,
-  checkOpenModalClass
-} from './utils.js';
+import { isEscapeEvent, checkOpenModalClass } from './utils.js';
 
 import {
   onCommentInputInput,
@@ -11,10 +8,7 @@ import {
 } from './form-validation.js';
 
 import { resetScaleValues } from './img-scale.js';
-import {
-  onImgEffectsListChange,
-  resetFilters
-} from './img-effects.js';
+import { onImgEffectsListChange, resetFilters } from './img-effects.js';
 
 import { addFormSubmitListener } from './api.js';
 
@@ -29,13 +23,14 @@ const onImageFormEscapeKeydown = (evt) => {
   if (isEscapeEvent(evt)) {
     resetStates();
   }
-}
+};
 
 const onUploadFileInput = () => {
   imgUploadOverlay.classList.remove('hidden');
   checkOpenModalClass();
   window.addEventListener('keydown', onImageFormEscapeKeydown);
   imgUploadCancelButton.addEventListener('click', onImgUploadCancelButtonClick);
+  uploadFileInput.removeEventListener('input', onUploadFileInput);
 
   commentInput.addEventListener('input', onCommentInputInput);
   hashtagsInput.addEventListener('input', onHashtagInputInvalid);
@@ -48,11 +43,13 @@ const onUploadFileInput = () => {
 
   imgEffectsList.addEventListener('change', onImgEffectsListChange);
   resetFilters();
-}
+};
+
 const resetStates = () => {
   imgUploadOverlay.classList.add('hidden');
   checkOpenModalClass();
   window.removeEventListener('keydown', onImageFormEscapeKeydown);
+  uploadFileInput.addEventListener('input', onUploadFileInput);
 
   resetScaleValues();
   resetUploadImgValues();
@@ -74,17 +71,18 @@ const resetStates = () => {
   imgUploadCancelButton.removeEventListener('click', onImgUploadCancelButtonClick);
 
   imgEffectsList.removeEventListener('change', onImgEffectsListChange);
-}
+};
+
 const onImgUploadCancelButtonClick = () => {
   resetStates();
-}
+};
 
 addFormSubmitListener(resetStates);
 
 const resetUploadImgValues = () => {
   uploadFileInput.value = '';
   imgUploadPreview.className = '';
-}
+};
 
 uploadFileInput.addEventListener('input', onUploadFileInput);
 

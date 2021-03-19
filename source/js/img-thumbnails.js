@@ -1,3 +1,4 @@
+
 const thumbnailTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');

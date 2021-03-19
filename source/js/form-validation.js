@@ -1,4 +1,4 @@
-import { checkStringLength, setErrorIndicator } from './utils.js'
+import { checkStringLength, setErrorIndicator } from './utils.js';
 
 const MAX_COMMENT_LENGTH = 140;
 const MAX_HASHTAG_LENGTH = 20;
@@ -9,11 +9,11 @@ const hashtagsInput = document.querySelector('.text__hashtags');
 const commentInput = document.querySelector('.text__description');
 const isValidHashtag = (item) => {
   return item !== '' && !(item.match(VALID_SYMBOLS));
-}
+};
 
 const isDoubledHashtag = (array) => {
   return new Set(array).size !== array.length;
-}
+};
 
 const onHashtagInputInvalid = () => {
   const hashtags = hashtagsInput.value.toLowerCase().trim().split(' ');
@@ -42,11 +42,11 @@ const onHashtagInputInvalid = () => {
     }
   })
   hashtagsInput.reportValidity();
-}
+};
 
 const onCommentInputInput = () => {
   checkStringLength(commentInput, MAX_COMMENT_LENGTH);
-}
+};
 
 export {
   onCommentInputInput,

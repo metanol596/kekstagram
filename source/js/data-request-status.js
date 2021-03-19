@@ -1,7 +1,6 @@
 import { isEscapeEvent } from './utils.js';
 
 const main = document.querySelector('main');
-
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
 const errorTemplate = document.querySelector('#error').content.querySelector('.error');
 
@@ -26,19 +25,25 @@ const showMessagePopup = (status, options) => {
     message.remove();
   })
 
-  window.addEventListener('click', () =>{
+  const onWindowClick = () => {
     message.remove();
-  })
+    window.removeEventListener('click', onWindowClick)
+  };
 
-  window.addEventListener('keydown', (evt) => {
+  window.addEventListener('click', onWindowClick);
+
+  const onWindowKeydown = (evt) => {
     if (isEscapeEvent(evt)) {
       message.remove();
+      window.removeEventListener('keydown', onWindowKeydown)
     }
-  })
+  };
+
+  window.addEventListener('keydown', onWindowKeydown);
 
   setTimeout(() => {
     message.remove();
   }, 5000);
-}
+};
 
 export { showMessagePopup }

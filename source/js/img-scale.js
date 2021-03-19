@@ -1,6 +1,5 @@
 import { imgUploadPreview } from './upload-img-form.js'
 
-const DEFAULT_SCALE = 1;
 const MIN_SCALE = 25;
 const MAX_SCALE = 100;
 const DEFAULT_SCALE_INPUT = '100%';
@@ -12,9 +11,7 @@ const scaleControlSmaller = imgUploadScaleContainer.querySelector('.scale__contr
 const scaleControlValue = imgUploadScaleContainer.querySelector('.scale__control--value');
 
 scaleControlValue.defaultValue = DEFAULT_SCALE_INPUT;
-
 let convertScaleControlValue = parseInt(scaleControlValue.value);
-let imageScale = DEFAULT_SCALE;
 
 const toggleControlState = () => {
   if (convertScaleControlValue === MAX_SCALE - 1) {
@@ -34,9 +31,7 @@ const onImgUploadScaleContainerClick = (evt) => {
     toggleControlState();
     if (convertScaleControlValue < MAX_SCALE) {
       convertScaleControlValue += SCALE_INPUT_STEP;
-      imageScale += SCALE_INPUT_STEP / 100;
-      imgUploadPreview.style.transform = 'scale(' + imageScale + ')';
-
+      imgUploadPreview.style.transform = 'scale(' + convertScaleControlValue / 100 + ')';
     }
   }
 
@@ -44,8 +39,7 @@ const onImgUploadScaleContainerClick = (evt) => {
     toggleControlState();
     if (convertScaleControlValue > MIN_SCALE) {
       convertScaleControlValue -= SCALE_INPUT_STEP;
-      imageScale -= SCALE_INPUT_STEP / 100;
-      imgUploadPreview.style.transform = 'scale(' + imageScale + ')';
+      imgUploadPreview.style.transform = 'scale(' + convertScaleControlValue / 100 + ')';
     }
   }
   scaleControlValue.value = convertScaleControlValue + '%';
@@ -54,7 +48,6 @@ const onImgUploadScaleContainerClick = (evt) => {
 const resetScaleValues = () => {
   scaleControlValue.value = MAX_SCALE;
   convertScaleControlValue = parseInt(scaleControlValue.value);
-  imageScale = DEFAULT_SCALE;
   scaleControlValue.value = convertScaleControlValue + '%';
 }
 
