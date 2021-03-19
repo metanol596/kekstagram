@@ -5,13 +5,11 @@ const MAX_DISPLAYED_COMMENTS_COUNT = 5;
 const fullImageSection = document.querySelector('.big-picture');
 const fullImageContainer = fullImageSection.querySelector('.big-picture__img');
 const fullImageLIkesContainer = fullImageSection.querySelector('.likes-count');
-const fullImageCommentsContainer = fullImageSection.querySelector('.comments-count');
 const fullImage = fullImageContainer.querySelector('img');
 const commentsBlock = document.querySelector('.social__comments');
 const commentCaption = fullImageSection.querySelector('.social__caption');
 const commentCount = fullImageSection.querySelector('.social__comment-count');
 const commentsLoaderButton = fullImageSection.querySelector('.comments-loader');
-let renderedCommentsCount = MAX_DISPLAYED_COMMENTS_COUNT;
 
 const fillFullImage = (picture) => {
   fullImage.src = picture.url;
@@ -26,45 +24,47 @@ const createCommentMarkup = (item) => {
   commentsBlock.appendChild(comment);
 }
 
+let startCount = MAX_DISPLAYED_COMMENTS_COUNT;
+let comments;
+
 const setComments = (picture) => {
-  const startLoadedComments = commentsBlock.childElementCount;
-  const commentsLength = picture.comments.length;
-  const comments = picture.comments;
   commentCaption.textContent = picture.description;
   commentsBlock.innerHTML = '';
+  const commentsLength = picture.comments.length;
+  comments = picture.comments;
+  startCount = MAX_DISPLAYED_COMMENTS_COUNT;
 
-  if (commentsLength > 0 && commentsLength <= MAX_DISPLAYED_COMMENTS_COUNT) {
+  if (commentsLength <= MAX_DISPLAYED_COMMENTS_COUNT) {
     commentsLoaderButton.classList.add('hidden');
-    comments.forEach((item) => {
-      createCommentMarkup(item);
-      commentCount.innerHTML = `${commentsLength} из <span class="comments-count">${commentsLength}</span> комментариев`;
-    })
+  } else {
+    commentsLoaderButton.classList.remove('hidden');
   }
 
-  if (commentsLength > MAX_DISPLAYED_COMMENTS_COUNT) {
-    commentsLoaderButton.classList.remove('hidden');
-    const previousLoadedComments = comments.slice(0, MAX_DISPLAYED_COMMENTS_COUNT);
-    previousLoadedComments.forEach((item) => {
-      createCommentMarkup(item);
-      commentCount.innerHTML = `${commentsBlock.childElementCount} из <span class="comments-count">${commentsLength}</span> комментариев`;
-    })
-    commentsLoaderButton.addEventListener('click', ()=> {
-      const nextLoadedCommemnts = comments.slice(startLoadedComments, (startLoadedComments + MAX_DISPLAYED_COMMENTS_COUNT));
-      nextLoadedCommemnts.forEach((item) => {
-        createCommentMarkup(item);
-        commentCount.innerHTML = `${commentsBlock.childElementCount} из <span class="comments-count">${commentsLength}</span> комментариев`;
-      })
-      const remainderLoadedComments = comments.slice(-1, (commentsLength - commentsBlock.childElementCount));
-      remainderLoadedComments.forEach((item) => {
-        createCommentMarkup(item);
-        commentCount.innerHTML = `${commentsBlock.childElementCount} из <span class="comments-count">${commentsLength}</span> комментариев`;
-      })
-      if (commentsBlock.childElementCount === commentsLength) {
-        commentsLoaderButton.classList.add('hidden');
-      }
-    });
-  }
+  const commentsToRender = commentsLength > MAX_DISPLAYED_COMMENTS_COUNT ? comments.slice(0, MAX_DISPLAYED_COMMENTS_COUNT) : comments;
+
+  commentsToRender.forEach((item) => {
+    createCommentMarkup(item);
+  })
+  commentCount.innerHTML = `${startCount > commentsLength ? commentsLength : startCount} из <span class="comments-count">${commentsLength}</span> комментариев`;
 };
+
+commentsLoaderButton.addEventListener('click', () => {
+  const nextStep = startCount + MAX_DISPLAYED_COMMENTS_COUNT;
+  const nextLoadedComments = comments.slice(startCount, nextStep);
+  const commentsLength = comments.length;
+
+  startCount = startCount + MAX_DISPLAYED_COMMENTS_COUNT;
+
+  nextLoadedComments.forEach((item) => {
+    createCommentMarkup(item);
+  })
+
+  if (startCount >= commentsLength) {
+    commentsLoaderButton.classList.add('hidden');
+  }
+
+  commentCount.innerHTML = `${startCount > commentsLength ? commentsLength : startCount} из <span class="comments-count">${commentsLength}</span> комментариев`;
+})
 
 const cleanComments = () => {
   const commentItems = commentsBlock.querySelectorAll('.social__comment');
