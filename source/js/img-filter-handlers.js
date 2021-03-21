@@ -43,8 +43,8 @@ const applyPhotosFilter = _.debounce((evt) => {
   const button = evt.target.closest('.img-filters__button');
   const filterType = button.id;
   const filter = filters[filterType];
-  const photos = filter();
-  const thumbnailsMarkup = getThumbnailsMarkup(photos);
+  originalPhotos = filter();
+  const thumbnailsMarkup = getThumbnailsMarkup(originalPhotos);
   thumbnailsContainer.appendChild(thumbnailsMarkup);
   thumbnailsContainer.addEventListener('click', onThumbnailsContainerClick);
   thumbnailsContainer.addEventListener('mouseover', onThumbnailsContainerMouseover);

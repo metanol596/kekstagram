@@ -23,7 +23,6 @@ getData(DOWNLOAD_DATA_URL, (photos) => {
   thumbnailsContainer.appendChild(thumbnailsMarkup);
   imgFiltersBlock.classList.remove('img-filters--inactive');
   imgFiltersButtonsContainer.addEventListener('click', onImgFiltersButtonsContainerClick);
-  // applyPhotosFilter();
   thumbnailsContainer.addEventListener('mouseover', onThumbnailsContainerMouseover);
   thumbnailsContainer.addEventListener('click', onThumbnailsContainerClick);
 });
