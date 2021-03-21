@@ -3,6 +3,13 @@ const thumbnailTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 
+const removePictureNodes = () => {
+  const pictureNodes = document.querySelectorAll('.picture');
+  pictureNodes.forEach((pictureNode) => {
+    pictureNode.remove();
+  })
+}
+
 const getThumbnailsMarkup = (photos) => {
   const fragment = document.createDocumentFragment();
 
@@ -21,12 +28,9 @@ const getThumbnailsMarkup = (photos) => {
 
       fragment.appendChild(clonedTemplate);
     });
+  removePictureNodes();
 
-  const pictureNodes = document.querySelectorAll('.picture');
-  pictureNodes.forEach((pictureNode) => {
-    pictureNode.remove();
-  })
   return fragment;
 }
 
-export { getThumbnailsMarkup };
+export { getThumbnailsMarkup, removePictureNodes };

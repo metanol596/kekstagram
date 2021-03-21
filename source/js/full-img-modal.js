@@ -1,4 +1,5 @@
 import { isEscapeEvent, checkOpenModalClass } from './utils.js';
+import {onThumbnailsContainerClick} from './img-filter-handlers.js';
 
 const MAX_DISPLAYED_COMMENTS_COUNT = 5;
 
@@ -10,6 +11,7 @@ const commentsBlock = document.querySelector('.social__comments');
 const commentCaption = fullImageSection.querySelector('.social__caption');
 const commentCount = fullImageSection.querySelector('.social__comment-count');
 const commentsLoaderButton = fullImageSection.querySelector('.comments-loader');
+const thumbnailsContainer = document.querySelector('.pictures');
 
 const fillFullImage = (picture) => {
   fullImage.src = picture.url;
@@ -95,6 +97,7 @@ const onCloseFullImageButtonClick = () => {
   window.removeEventListener('keydown', onWindowKeydown);
   checkOpenModalClass();
   cleanComments();
+  thumbnailsContainer.addEventListener('click', onThumbnailsContainerClick);
 };
 
 closeFullImageButton.addEventListener('click', onCloseFullImageButtonClick);
