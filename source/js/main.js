@@ -7,10 +7,9 @@ import './insert-image.js';
 import {
   setOriginalPhotos,
   onImgFiltersButtonsContainerClick,
-  onThumbnailsContainerClick,
-  onThumbnailsContainerMouseover
+  renderPhotosMarkup
 } from './img-filter-handlers.js';
-import { getThumbnailsMarkup } from './img-thumbnails.js';
+import { openFullImageModal } from './full-img-modal.js';
 
 const DOWNLOAD_DATA_URL = 'https://22.javascript.pages.academy/kekstagram/data' ;
 
@@ -19,11 +18,16 @@ const thumbnailsContainer = document.querySelector('.pictures');
 const imgFiltersBlock = document.querySelector('.img-filters');
 getData(DOWNLOAD_DATA_URL, (photos) => {
   setOriginalPhotos(photos);
-  const thumbnailsMarkup = getThumbnailsMarkup(photos);
-  thumbnailsContainer.appendChild(thumbnailsMarkup);
   imgFiltersBlock.classList.remove('img-filters--inactive');
+  renderPhotosMarkup(photos);
   imgFiltersButtonsContainer.addEventListener('click', onImgFiltersButtonsContainerClick);
-  thumbnailsContainer.addEventListener('mouseover', onThumbnailsContainerMouseover);
-  thumbnailsContainer.addEventListener('click', onThumbnailsContainerClick);
+  thumbnailsContainer.addEventListener('click', (evt) => {
+    const targetPicture = evt.target.closest('.picture');
+    if (evt.target && targetPicture) {
+      evt.preventDefault();
+      const currentImage = evt.target.id;
+      const photo = photos[currentImage];
+      openFullImageModal(photo);
+    }
+  })
 });
-
