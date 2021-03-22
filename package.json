@@ -18,9 +18,6 @@
     "webpack-cli": "4.5.0"
   },
   "license": "MIT",
-  "dependencies": {
-    "lodash": "^4.17.21"
-  },
   "scripts": {
     "build": "webpack --mode production",
     "start": "browser-sync start --server \"build/\" --no-ui --files \"source/**/*.js\"",
