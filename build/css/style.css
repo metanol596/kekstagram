@@ -227,6 +227,8 @@ main {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+
+  pointer-events: none;
 }
 
 .picture__comments,
@@ -237,6 +239,8 @@ main {
   font-family: "Open Sans", "Arial", sans-serif;
   font-weight: 400;
   color: #ffffff;
+
+  pointer-events: none;
 }
 
 .picture__comments {

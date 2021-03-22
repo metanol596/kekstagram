@@ -15,13 +15,13 @@ const getThumbnailsMarkup = (photos) => {
 
   photos
     .slice()
-    .forEach((picture, i) => {
+    .forEach((picture) => {
       const clonedTemplate = thumbnailTemplate.cloneNode(true);
       const image = clonedTemplate.querySelector('.picture__img');
       const likes = clonedTemplate.querySelector('.picture__likes');
       const comments = clonedTemplate.querySelector('.picture__comments');
 
-      image.dataset.number = i;
+      image.id = picture.id;
       image.src = picture.url;
       likes.textContent = picture.likes;
       comments.textContent = picture.comments.length;
