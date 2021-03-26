@@ -1,4 +1,5 @@
-/* global noUiSlider:readonly */
+import noUiSlider from 'nouislider';
+import 'nouislider/distribute/nouislider.css';
 import { filterEffects } from './filter-effects.js';
 
 const sliderElementContainer = document.querySelector('.effect-level');
