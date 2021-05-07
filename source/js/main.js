@@ -1,3 +1,7 @@
+import '../css/normalize.css'
+import '../css/style.css';
+import '../index.html';
+
 import './img-scale.js';
 import './upload-img-form.js';
 import './img-effects.js';
